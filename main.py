@@ -1,9 +1,12 @@
+from crypt import methods
+
 from flask import Flask, render_template, Response, request, jsonify
 from data import Game
 import json
 
 app = Flask(__name__)
 header = {'Content-Type': 'text/html;charset=utf-8'}
+
 
 @app.route('/')
 def hello():
@@ -63,6 +66,40 @@ def score_view(team: str):
     if score == -2:
         return Response(f"Команды {team} не существует.", status=400)
     return Response(f"Счёт команды <b>{team.upper()}</b>: {score}")
+
+@app.route("/field", methods=["GET", "POST"])
+def field_view():
+    if request.method == "GET":
+        field = Game.field.field
+        return Response(str(field), status=200)
+
+    keys = ["team", "x", "y"]
+    response_body: dict[str, str] = {}
+    missing_keys = []
+    try:
+        s = request.data.decode('utf8')
+        request_json = json.loads(s)
+    except:
+        return Response("Ошибка перевода JSON в текст", status=400)
+    for key in keys:
+        if key not in request_json:
+            missing_keys.append(key)
+        else:
+            response_body[key] = request_json[key]
+    if missing_keys:
+        return Response(f"В теле запроса отсутствуют следующие ключи: {missing_keys}")
+
+    x, y = int(response_body["x"]), int(response_body["y"])
+    team = response_body["team"]
+
+    code = Game.set_point(x, y, team)
+    if code == -2:
+        return Response(f"Команды {team} не существует.", status=400)
+    elif code == -1:
+        return Response(f"У вашей команды закончились очки.", status=200)
+    elif code == 2:
+        return Response(f"Клетка {x, y} уже захвачена вашей командой. Очки не потерялись. Осталось {Game.get_score(team)} очков")
+    return Response(f"Клетка {x, y} захвачена. Осталось {Game.get_score(team)} очков")
 
 def main():
     app.run()

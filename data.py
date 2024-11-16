@@ -25,9 +25,12 @@ class Field:
     def __init__(self, n=20, m=20):
         self.field = [[0] * m for _ in range(n)]
 
-    def set_pos(self, x, y, team: Team):
-        color = COLORS[team.name]
+    def set_pos(self, x, y, team_name):
+        color = COLORS[team_name]
+        if self.field[y][x] == color:
+            return 2
         self.field[y][x] = color
+        return 1
 
 class Questions:
     def __init__(self):
@@ -64,3 +67,14 @@ class Game:
         if (team := cls.get_team(team_name)) is None:
             return -2
         return team.score
+
+    @classmethod
+    def set_point(cls, x, y, team_name, author=None):
+        if (team := cls.get_team(team_name)) is None:
+            return -2
+        if team.score <= 0:
+            return -1
+        code = cls.field.set_pos(x, y, team_name)
+        if code == 1:
+            team.score -= 1
+        return code
