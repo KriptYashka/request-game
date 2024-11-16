@@ -57,6 +57,13 @@ def question_view(qid: str):
     return Response(text, status=200)
 
 
+@app.route("/score/<team>", methods=["GET"])
+def score_view(team: str):
+    score = Game.get_score(team)
+    if score == -2:
+        return Response(f"Команды {team} не существует.", status=400)
+    return Response(f"Счёт команды <b>{team.upper()}</b>: {score}")
+
 def main():
     app.run()
 

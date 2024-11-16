@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 COLORS = {
     "unknown": 0,
@@ -8,16 +9,15 @@ COLORS = {
 }
 
 class Team:
-    def __init__(self, name: str):
-        self.name = name.upper()
+    def __init__(self):
         self.score = 0
         self.solved_id = set()
 
-    def solve(self, qid: int) -> bool:
+    def solve(self, qid: str, score: int) -> int:
         if qid in self.solved_id:
             return -1
         self.solved_id.add(qid)
-        # TODO: добавить очки
+        self.score += score
         return 1
 
 
@@ -36,17 +36,31 @@ class Questions:
 
 class Game:
     teams = {
-        "red"  : Team("red"),
-        "green": Team("green"),
-        "blue" : Team("blue")
+        "red"  : Team(),
+        "green": Team(),
+        "blue" : Team()
     }
 
     field = Field()
     questions = Questions()
 
     @classmethod
-    def solve(cls, qid: str, team_name: str):
+    def get_team(cls, team_name: str) -> Optional[Team]:
         team_name = team_name.lower()
         if team_name not in cls.teams:
+            return None
+        return cls.teams[team_name]
+
+
+    @classmethod
+    def solve(cls, qid: str, team_name: str):
+        if (team := cls.get_team(team_name)) is None:
             return -2
-        return cls.teams[team_name].solve(qid)
+        score = cls.questions.data[qid]["score"]
+        return team.solve(qid, score)
+
+    @classmethod
+    def get_score(cls, team_name: str):
+        if (team := cls.get_team(team_name)) is None:
+            return -2
+        return team.score
