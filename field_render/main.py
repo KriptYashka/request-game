@@ -6,7 +6,7 @@ import requests
 class Settings:
     WIDTH, HEIGHT = 1420, 800
     FPS = 10
-    URL = "http://127.0.0.1:5000"
+    URL = "https://kriptyashka.pythonanywhere.com/"
 
     padding = 20
     space = 2
@@ -51,6 +51,15 @@ class Field:
                                  size_cell - Settings.space, size_cell - Settings.space)
                 draw_rectangle_rec(cell, color)
 
+    def get_score(self):
+        score = {
+            i: 0 for i in range(4)
+        }
+        for row in self.data:
+            for val in row:
+                score[val] += 1
+        return score
+
 class Text:
     def __init__(self, pos: list, color):
         self.pos = pos
@@ -90,8 +99,9 @@ def main():
         tick += 1
         if tick % update_tick == 0:
             field.load()
+            s = field.get_score()
             for i, score in enumerate(scores):
-                score.load()
+                score.text = f"Score {teams[i]}: {s[i+1]}"
                 score.pos = [Settings.RIGHT_SPLIT + 20, 20 + i * 50]
         begin_drawing()
         clear_background(colors.BLACK)
