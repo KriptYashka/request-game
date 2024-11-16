@@ -6,6 +6,12 @@ import requests
 class Settings:
     WIDTH, HEIGHT = 1420, 800
     FPS = 10
+    URL = "http://127.0.0.1:5000"
+
+    padding = 20
+    space = 2
+    size_matrix = HEIGHT - 2 * padding
+    RIGHT_SPLIT = size_matrix + padding
 
 class Field:
     COLORS = {
@@ -30,40 +36,69 @@ class Field:
             print("Не удалось подключиться.")
 
     def draw(self):
-        padding = 20
-        space = 2
+
         try:
             n, m = len(self.data[0]), len(self.data)
         except:
             return None
-        size_matrix = Settings.HEIGHT - 2 * padding
-        size_cell = size_matrix // min(n, m)
+
+        size_cell = Settings.size_matrix // min(n, m)
         for y in range(n):
             for x in range(m):
                 value = self.data[y][x]
                 color = self.COLORS[value]
-                cell = Rectangle(padding + x * size_cell, padding + y * size_cell,
-                                 size_cell - space, size_cell - space)
+                cell = Rectangle(Settings.padding + x * size_cell, Settings.padding + y * size_cell,
+                                 size_cell - Settings.space, size_cell - Settings.space)
                 draw_rectangle_rec(cell, color)
 
+class Text:
+    def __init__(self, pos: list, color):
+        self.pos = pos
+        self.text = "No data"
+        self.color = color
+        self.__url = None
+
+    def set_url(self, url):
+        self.__url = url
+
+    def load(self):
+        try:
+            data = requests.get(self.__url)
+            self.text = data.content.decode("utf8")[16:]
+            self.text = self.text.replace("</b>", "")
+            self.text = f"Score {self.text}"
+        except:
+            print("Не удалось подключиться к URL текста")
 
 
+    def draw(self):
+        draw_text(self.text, *self.pos, 32, self.color)
 
 def main():
     init_window(Settings.WIDTH, Settings.HEIGHT, "SHP")
     set_target_fps(Settings.FPS)
     update_tick = Settings.FPS * 2
     tick = -1
-    field = Field("http://127.0.0.1:5000/field")
+    teams = ["red", "green", "blue"]
+    scores = []
+    field = Field(Settings.URL + "/field")
+    for i, team in enumerate(teams):
+        text = Text([Settings.RIGHT_SPLIT + 20, 20 + i * 50], colors.WHITE)
+        text.set_url(Settings.URL + f"/score/{team}")
+        scores.append(text)
     while not window_should_close():
         tick += 1
         if tick % update_tick == 0:
             field.load()
+            for i, score in enumerate(scores):
+                score.load()
+                score.pos = [Settings.RIGHT_SPLIT + 20, 20 + i * 50]
         begin_drawing()
         clear_background(colors.BLACK)
         field.draw()
+        for score in scores:
+            score.draw()
         end_drawing()
-
 
 
 if __name__ == '__main__':

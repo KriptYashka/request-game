@@ -22,7 +22,7 @@ class Team:
 
 
 class Field:
-    def __init__(self, n=20, m=20):
+    def __init__(self, n=32, m=32):
         self.field = [[0] * m for _ in range(n)]
 
     def set_pos(self, x, y, team_name):
