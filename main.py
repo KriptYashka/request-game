@@ -7,10 +7,10 @@ import json
 app = Flask(__name__)
 header = {'Content-Type': 'text/html;charset=utf-8'}
 
-
 @app.route('/')
 def hello():
-  return render_template('index.html')
+    return render_template('index.html')
+
 
 @app.route('/question/<qid>', methods=["GET", "POST"])
 def question_view(qid: str):
@@ -67,13 +67,14 @@ def score_view(team: str):
         return Response(f"Команды {team} не существует.", status=400)
     return Response(f"Счёт команды <b>{team.upper()}</b>: {score}")
 
+
 @app.route("/field", methods=["GET", "POST"])
 def field_view():
     if request.method == "GET":
         field = Game.field.field
         return Response(str(field), status=200)
 
-    keys = ["team", "x", "y"]
+    keys = ["team", "x", "y", "key"]
     response_body: dict[str, str] = {}
     missing_keys = []
     try:
@@ -91,18 +92,24 @@ def field_view():
 
     x, y = int(response_body["x"]), int(response_body["y"])
     team = response_body["team"]
+    key = response_body["key"]
 
-    code = Game.set_point(x, y, team)
-    if code == -2:
+    code = Game.set_point(x, y, team, key)
+    if code == -3:
+        return Response(f"Ключ команды {team} некорректен", status=400)
+    elif code == -2:
         return Response(f"Команды {team} не существует.", status=400)
     elif code == -1:
         return Response(f"У вашей команды закончились очки.", status=200)
     elif code == 2:
-        return Response(f"Клетка {x, y} уже захвачена вашей командой. Очки не потерялись. Осталось {Game.get_score(team)} очков")
+        return Response(
+            f"Клетка {x, y} уже захвачена вашей командой. Очки не потерялись. Осталось {Game.get_score(team)} очков")
     return Response(f"Клетка {x, y} захвачена. Осталось {Game.get_score(team)} очков")
+
 
 def main():
     app.run()
+
 
 if __name__ == '__main__':
     main()

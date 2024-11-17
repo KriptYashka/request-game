@@ -2,12 +2,12 @@
   "1": {
     "question": "ФИО преподавателя (тот, что вас дубасит за отсутствие ДЗ)",
     "answer": ["Кучук Егор Андреевич"],
-    "score": 10
+    "score": 20
   },
   "2": {
     "question": "Название предмета",
     "answer": ["Промышленное программирование", "Промка"],
-    "score": 15
+    "score": 30
   },
   "3": {
     "question": "Укажите моржовый оператор",
@@ -15,9 +15,9 @@
     "score": 30
   },
   "4": {
-    "question": "[Git] Удалить ветку `ignat` удаленно.",
-    "answer": ["git push -d origin ignat", "git push -D origin ignat"],
-    "score": 50
+    "question": "[Git] Удалить ветку `vladislavthebest` удаленно.",
+    "answer": ["git push -d origin vladislavthebest", "git push -D origin vladislavthebest", "git push --delete origin vladislavthebest"],
+    "score": 80
   },
   "5": {
     "question": "[Git] Переключиться на ветку `master`",
@@ -32,42 +32,42 @@
   "7": {
     "question": "Механизм передачи свойств и методов дочерним классам",
     "answer": ["Наследование"],
-    "score": 15
+    "score": 30
   },
   "8": {
-    "question": "Версия Linux на которой вы работаете",
+    "question": "Версия Linux на которой вы работаете (числа)",
     "answer": ["24.04"],
-    "score": 20
+    "score": 30
   },
   "9": {
     "question": "Подключение виртуального окружения `venv` через терминал (Linux)",
     "answer": ["source venv/bin/activate"],
-    "score": 15
+    "score": 30
   },
   "10": {
     "question": "Название канала ТГ по Промке",
     "answer": ["Prom Advanced 24/25"],
-    "score": 24
+    "score": 100
   },
   "11": {
     "question": "Ответ на главный вопрос жизни, вселенной и всего такого...",
     "answer": ["42"],
-    "score": 42
+    "score": 420
   },
   "12": {
     "question": "[Raylib] Какой метод отвечает за отрисовку куба? (напишите без pyray. и без скобок)",
     "answer": ["draw_cube"],
-    "score": 25
+    "score": 75
   },
   "13": {
     "question": "1 + 1",
     "answer": ["11"],
-    "score": 11
+    "score": 111
   },
   "14": {
     "question": "... - это подход к построению интерактивных интерфейсов веб-приложений",
     "answer": ["AJAX"],
-    "score": 20
+    "score": 50
   },
   "15": {
     "question": "Удалить последний коммит: git _________ HEAD~1",
@@ -75,39 +75,39 @@
     "score": 50
   },
   "16": {
-    "question": "Команда для проверки кода `main.py` по формату PEP8 с использованием всех ядер и игнором обишки C0103",
-    "answer": ["pylint -j 0 --disable=C0103 main.py"],
-    "score": 50
+    "question": "Что это? sin(x)^2 + cos(y)^2 = 1",
+    "answer": ["Окружность"],
+    "score": 100
   },
   "17": {
     "question": "Какая функция в Python создает уязвимость системы под RCE?",
     "answer": ["eval", "eval()"],
-    "score": 25
+    "score": 100
   },
   "18": {
     "question": "Тип атаки на веб-системы, заключающийся во внеднении в выдаваемую веб-системой страницу вредоносного кода",
     "answer": ["XSS", "XSS Injection", "XSS-Injection", "cross-site scripting"],
-    "score": 50
+    "score": 120
   },
   "19": {
     "question": "Библиотека для создания веб-приложений, которую мы будем рассматривать на следующем занятии.",
     "answer": ["Django"],
-    "score": 30
+    "score": 50
   },
   "20": {
     "question": "Какая марка мотоцикла у Егора Андреевича? =)",
     "answer": ["Voge"],
-    "score": 100
+    "score": 350
   },
   "21": {
     "question": "Вы в порядке?",
     "answer": ["Нет"],
-    "score": 20
+    "score": 50
   },
   "22": {
     "question": "Для того, чтобы создать конструктор класса, вам требуется написать внутри него метод с именем ...",
     "answer": ["__init__"],
-    "score": 15
+    "score": 30
   },
   "23": {
     "question": "I’m a teapot",

@@ -9,6 +9,12 @@ COLORS = {
 }
 
 class Team:
+    KEYS = {
+        "red": "kyotobeautiful",
+        "green": "kriptghjvsiktyrf",
+        "blue": "arasakitowersamurai",
+    }
+
     def __init__(self):
         self.score = 0
         self.solved_id = set()
@@ -69,9 +75,11 @@ class Game:
         return team.score
 
     @classmethod
-    def set_point(cls, x, y, team_name, author=None):
+    def set_point(cls, x, y, team_name, key):
         if (team := cls.get_team(team_name)) is None:
             return -2
+        if Team.KEYS[team_name] != key:
+            return -3
         if team.score <= 0:
             return -1
         code = cls.field.set_pos(x, y, team_name)
